@@ -29,10 +29,11 @@ type Network struct {
 	DHCPDBootEnabled                              bool                            `json:"dhcpd_boot_enabled"`
 	DHCPDBootFilename                             string                          `json:"dhcpd_boot_filename,omitempty"` // .{1,256}
 	DHCPDBootServer                               string                          `json:"dhcpd_boot_server"`             // ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$|^$|(?=^.{3,253}$)(^((?!-)[a-zA-Z0-9-]{1,63}(?<!-)\.)+[a-zA-Z]{2,63}$)|[a-zA-Z0-9-]{1,63}|^$
-	DHCPDDNS1                                     string                          `json:"dhcpd_dns_1"`                   // ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$|^$
-	DHCPDDNS2                                     string                          `json:"dhcpd_dns_2"`                   // ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$|^$
-	DHCPDDNS3                                     string                          `json:"dhcpd_dns_3"`                   // ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$|^$
-	DHCPDDNS4                                     string                          `json:"dhcpd_dns_4"`                   // ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$|^$
+	DHCPDConflictChecking                         bool                            `json:"dhcpd_conflict_checking"`
+	DHCPDDNS1                                     string                          `json:"dhcpd_dns_1"` // ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$|^$
+	DHCPDDNS2                                     string                          `json:"dhcpd_dns_2"` // ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$|^$
+	DHCPDDNS3                                     string                          `json:"dhcpd_dns_3"` // ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$|^$
+	DHCPDDNS4                                     string                          `json:"dhcpd_dns_4"` // ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$|^$
 	DHCPDDNSEnabled                               bool                            `json:"dhcpd_dns_enabled"`
 	DHCPDEnabled                                  bool                            `json:"dhcpd_enabled"`
 	DHCPDGateway                                  string                          `json:"dhcpd_gateway"` // ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$|^$
@@ -108,6 +109,8 @@ type Network struct {
 	IPSecRemoteIDentifier                         string                          `json:"ipsec_remote_identifier,omitempty"`
 	IPSecRemoteIDentifierEnabled                  bool                            `json:"ipsec_remote_identifier_enabled"`
 	IPSecSeparateIkev2Networks                    bool                            `json:"ipsec_separate_ikev2_networks"`
+	IPSecTunnelIP                                 string                          `json:"ipsec_tunnel_ip,omitempty"` // ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\/([1-9]|[1-2][0-9]|3[0-2])$
+	IPSecTunnelIPEnabled                          bool                            `json:"ipsec_tunnel_ip_enabled"`
 	IPSubnet                                      string                          `json:"ip_subnet,omitempty"`                      // ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\/([1-9]|[1-2][0-9]|3[0-2])$
 	IPV6ClientAddressAssignment                   string                          `json:"ipv6_client_address_assignment,omitempty"` // slaac|dhcpv6
 	IPV6InterfaceType                             string                          `json:"ipv6_interface_type,omitempty"`            // static|pd|single_network|none
@@ -161,7 +164,8 @@ type Network struct {
 	RADIUSProfileID                               string                          `json:"radiusprofile_id"`
 	RemoteSiteID                                  string                          `json:"remote_site_id"`
 	RemoteSiteSubnets                             []string                        `json:"remote_site_subnets,omitempty"` // ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\/([1-9]|[1-2][0-9]|30)$|^$
-	RemoteVPNSubnets                              []string                        `json:"remote_vpn_subnets,omitempty"`  // ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\/([1-9]|[1-2][0-9]|3[0-2])$|^$
+	RemoteVPNDynamicSubnetsEnabled                bool                            `json:"remote_vpn_dynamic_subnets_enabled"`
+	RemoteVPNSubnets                              []string                        `json:"remote_vpn_subnets,omitempty"` // ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\/([1-9]|[1-2][0-9]|3[0-2])$|^$
 	ReportWANEvent                                bool                            `json:"report_wan_event"`
 	RequireMschapv2                               bool                            `json:"require_mschapv2"`
 	RouteDistance                                 int                             `json:"route_distance,omitempty"`     // ^[1-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]$|^$
@@ -181,7 +185,7 @@ type Network struct {
 	UidWorkspaceUrl                               string                          `json:"uid_workspace_url,omitempty"`
 	UpnpLanEnabled                                bool                            `json:"upnp_lan_enabled"`
 	UserGroupID                                   string                          `json:"usergroup_id"`
-	VLAN                                          int                             `json:"vlan,omitempty"` // [2-9]|[1-9][0-9]{1,2}|[1-3][0-9]{3}|400[0-9]|^$
+	VLAN                                          int                             `json:"vlan,omitempty"` // [2-9]|[1-9][0-9]{1,2}|[1-3][0-9]{3}|400[0-9]|401[0-8]|^$
 	VLANEnabled                                   bool                            `json:"vlan_enabled"`
 	VPNClientConfigurationRemoteIPOverride        string                          `json:"vpn_client_configuration_remote_ip_override,omitempty"`
 	VPNClientConfigurationRemoteIPOverrideEnabled bool                            `json:"vpn_client_configuration_remote_ip_override_enabled"`
