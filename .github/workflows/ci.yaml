@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: 'ubuntu-latest'
     steps:
-      - uses: 'actions/checkout@v4'
+      - uses: 'actions/checkout@v5'
       - uses: 'actions/setup-go@v5'
       - run: 'go build ./...'
 
@@ -19,7 +19,7 @@ jobs:
     needs: 'build'
     runs-on: 'ubuntu-latest'
     steps:
-      - uses: 'actions/checkout@v4'
+      - uses: 'actions/checkout@v5'
       - uses: 'actions/setup-go@v5'
 
       - run: 'go generate unifi/device.go'
@@ -28,7 +28,7 @@ jobs:
   lint:
     runs-on: 'ubuntu-latest'
     steps:
-      - uses: 'actions/checkout@v4'
+      - uses: 'actions/checkout@v5'
       - uses: 'actions/setup-go@v5'
       - uses: 'golangci/golangci-lint-action@v4'
         with:
@@ -38,12 +38,12 @@ jobs:
     needs: 'build'
     runs-on: 'ubuntu-latest'
     steps:
-      - uses: 'actions/checkout@v4'
+      - uses: 'actions/checkout@v5'
       - uses: 'actions/setup-go@v5'
       - run: 'go test ./...'
 
   yamllint:
     runs-on: 'ubuntu-latest'
     steps:
-      - uses: 'actions/checkout@v4'
+      - uses: 'actions/checkout@v5'
       - uses: 'ibiqlik/action-yamllint@v3'
